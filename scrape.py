@@ -10,7 +10,8 @@ BASE_DIR = os.path.dirname(__file__)
 
 now = datetime.datetime.now()
 year = now.year
-        
+
+# Save html website in a file        
 def url_to_txt(url, filename="world.html", save=False):
     r = requests.get(url)
     if r.status_code == 200:
@@ -21,6 +22,7 @@ def url_to_txt(url, filename="world.html", save=False):
         return html_text
     return None
 
+# Extracting the data
 def parse_and_extract(url, name ='2022'):
     html_text = url_to_txt(url)
     if html_text == None:
@@ -51,7 +53,10 @@ def parse_and_extract(url, name ='2022'):
             row_data.append(col.text)
         # table_data_dicts.append(row_dict_data)
         table_data.append(row_data)
+        
     df = pd.DataFrame(table_data, columns=header_names)
+    
+    # Save data in a csv file in data folder
     # df.to_csv(f'{name}.csv', index=False)
     path = os.path.join(BASE_DIR, 'data')
     os.makedirs(path, exist_ok=True)
@@ -59,6 +64,7 @@ def parse_and_extract(url, name ='2022'):
     df.to_csv(filepath, index=False)
     return True
 
+# function to start years and back year count
 def run(start_year = None, years_ago=0):
     if start_year == None:
         now = datetime.datetime.now()
